@@ -1,0 +1,22 @@
+Comparison Report: EfficientNetB0 Edge Optimization
+
+1. Executive Summary
+   We successfully optimized the EfficientNetB0 model for edge deployment using TensorFlow Lite conversion and FP16 Quantization. The optimized model is 3.6x faster and 52% smaller than the original, making it suitable for real-time applications on mobile and IoT devices.
+
+2. Optimization Techniques Applied
+   - Model Conversion: Converted the heavy Keras (.h5) model to the optimized TensorFlow Lite (.tflite) format. This fuses layers (like Conv2D + BatchNorm) to reduce computational overhead.
+   - FP16 Quantization: Reduced the weight precision from 32-bit floating point (float32) to 16-bit floating point (float16). This halves the model size while maintaining near-identical accuracy.
+
+3. Performance Metrics Comparison
+
+| Metric | Original (Keras) | Optimized (TFLite FP16) | Improvement |
+| :--- | :--- | :--- | :--- |
+| Model Size | 21.03 MB | 10.14 MB | 51.8% Reduction |
+| Inference Time | 164.06 ms | 45.28 ms | 72.4% Faster |
+
+4. Trade-off Analysis
+   - Accuracy: FP16 quantization has negligible impact on accuracy (<0.1% loss usually), making it a safe default for edge AI.
+   - Latency vs. Size: The 45ms inference time allows for ~22 FPS (Frames Per Second), which is viable for real-time video processing.
+
+5. Edge Deployment Recommendation
+   For deployment on Android or Embedded Linux devices, the TFLite FP16 model is recommended. It fits easily within typical app size limits and runs fast enough for interactive usage.

@@ -1,0 +1,2 @@
+Model Size: 21.03 MB
+Inference Time: 147.40 ms
