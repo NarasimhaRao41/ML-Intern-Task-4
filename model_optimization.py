@@ -5,26 +5,26 @@ import os
 import psutil
 
 def get_file_size(file_path):
-    """Helper to get file size in MB"""
+    
     return os.path.getsize(file_path) / (1024 * 1024)
 
 def run_optimization_task():
     print("--- Starting ML Intern Task 4 ---")
     
-    # 1. SETUP & BASELINE
+   
     print("\n[1/4] Loading Baseline EfficientNetB0...")
     model = tf.keras.applications.EfficientNetB0(weights='imagenet', include_top=True)
     
-    # Create output directory
+   
     if not os.path.exists('output'):
         os.makedirs('output')
 
-    # Save Baseline to measure size
+    
     baseline_path = 'output/baseline_model.h5'
     model.save(baseline_path)
     baseline_size = get_file_size(baseline_path)
     
-    # Measure Baseline Speed
+    
     print("      Measuring Baseline Speed (this takes a moment)...")
     input_data = np.random.rand(1, 224, 224, 3).astype(np.float32)
     model.predict(input_data, verbose=0) # Warmup
@@ -38,7 +38,7 @@ def run_optimization_task():
     print(f"      Baseline Size: {baseline_size:.2f} MB")
     print(f"      Baseline Time: {baseline_time:.2f} ms")
 
-    # 2. OPTIMIZATION (TFLite + FP16)
+ 
     print("\n[2/4] Converting to TFLite with FP16 Quantization...")
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
@@ -52,7 +52,6 @@ def run_optimization_task():
     opt_size = get_file_size(tflite_path)
     print(f"      Optimized Size: {opt_size:.2f} MB")
 
-    # 3. MEASURE OPTIMIZED SPEED
     print("\n[3/4] Measuring Optimized Speed...")
     interpreter = tf.lite.Interpreter(model_path=tflite_path)
     interpreter.allocate_tensors()
@@ -71,7 +70,6 @@ def run_optimization_task():
     
     print(f"      Optimized Time: {opt_time:.2f} ms")
 
-    # 4. GENERATE METRICS FILES
     print("\n[4/4] Saving Metrics Files...")
     with open('original_metrics.txt', 'w') as f:
         f.write(f"Model Size: {baseline_size:.2f} MB\nInference Time: {baseline_time:.2f} ms\n")
