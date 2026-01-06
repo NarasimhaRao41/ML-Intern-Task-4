@@ -10,7 +10,6 @@ Comparison Report: EfficientNetB0 Edge Optimization
 3. Performance Metrics Comparison
 
 | Metric | Original (Keras) | Optimized (TFLite FP16) | Improvement |
-| :--- | :--- | :--- | :--- |
 | Model Size | 21.03 MB | 10.14 MB | 51.8% Reduction |
 | Inference Time | 164.06 ms | 45.28 ms | 72.4% Faster |
 
